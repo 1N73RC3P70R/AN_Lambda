@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T16:36:05" hostname="K-K-K" time="0.028">
+<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T16:38:07" hostname="K-K-K" time="0.028">
   <properties/>
-  <testcase name="testAddMessage" classname="ChatServiceTest" time="0.005"/>
-  <testcase name="testDeleteMessage" classname="ChatServiceTest" time="0.007"/>
+  <testcase name="testAddMessage" classname="ChatServiceTest" time="0.004"/>
+  <testcase name="testDeleteMessage" classname="ChatServiceTest" time="0.006"/>
   <testcase name="testClearChats" classname="ChatServiceTest" time="0.0"/>
-  <testcase name="testGetLastMessage" classname="ChatServiceTest" time="0.015"/>
-  <testcase name="testGetMessages" classname="ChatServiceTest" time="0.001"/>
+  <testcase name="testGetLastMessage" classname="ChatServiceTest" time="0.016"/>
+  <testcase name="testGetMessages" classname="ChatServiceTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

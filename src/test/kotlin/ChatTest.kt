@@ -33,8 +33,8 @@ class ChatServiceTest {
     @Test
     fun testClearChats() {
         val service = ChatService
-        service.addMessage(1, Message("Hello!"))
-        service.addMessage(2, Message("Hi!"))
+        service.addMessage(0, Message("Здравствуй!"))
+        service.addMessage(1, Message("Добрый день!"))
         service.clearChats()
         assertTrue(service.getChats().isEmpty())
     }
@@ -42,7 +42,7 @@ class ChatServiceTest {
     @Test
     fun testDeleteMessage() {
         val service = ChatService
-        service.addMessage(1, Message("Hello!"))
+        service.addMessage(1, Message("Здравствуй!"))
         service.deleteMessage(1, 0)
         assertTrue(service.getMessages(1, 1).isEmpty())
     }
