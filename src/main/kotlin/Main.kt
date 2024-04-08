@@ -73,6 +73,5 @@ object ChatService {
     }
 }
 
-
 data class Message(val text: String, var read: Boolean = false)
 data class Chat(val message: MutableList<Message> = mutableListOf())
