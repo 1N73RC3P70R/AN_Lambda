@@ -1,5 +1,4 @@
-import org.junit.Assert.assertEquals
-import org.junit.Assert.fail
+import org.junit.Assert.*
 import org.junit.Test
 
 class ChatServiceTest {
@@ -23,13 +22,28 @@ class ChatServiceTest {
         }
     }
 
-
-
-
     @Test
     fun testGetLastMessage() {
         val service = ChatService
         service.addMessage(2, Message("Последнее сообщение."))
-        assertEquals("Последнее сообщение.", service.getLastMessage())
+        val lastMessages = service.getLastMessage()
+        assertEquals("Последнее сообщение.", lastMessages.lastOrNull())
+    }
+
+    @Test
+    fun testClearChats() {
+        val service = ChatService
+        service.addMessage(1, Message("Hello!"))
+        service.addMessage(2, Message("Hi!"))
+        service.clearChats()
+        assertTrue(service.getChats().isEmpty())
+    }
+
+    @Test
+    fun testDeleteMessage() {
+        val service = ChatService
+        service.addMessage(1, Message("Hello!"))
+        service.deleteMessage(1, 0)
+        assertTrue(service.getMessages(1, 1).isEmpty())
     }
 }

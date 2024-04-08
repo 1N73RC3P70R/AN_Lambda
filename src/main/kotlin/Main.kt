@@ -1,8 +1,12 @@
 fun main() {
     val service = ChatService
 
+
     service.addMessage(0, Message("Здравствуй!", true))
     service.addMessage(1, Message("Добрый день!"))
+
+    val allMessages = ChatService.getChats()
+    println("Все сообщения: $allMessages")
 
     println("Непрочитанные сообщения: ${service.getUnreadChatsCount()}")
 
@@ -12,7 +16,15 @@ fun main() {
         println("Сообщение отсутствует: ${e.message}")
     }
 
-    println("Последнее: ${service.getLastMessage()}")
+    ChatService.deleteMessage(1, 0)
+    val lastMessages = ChatService.getLastMessage()
+    println("Последние сообщения: $lastMessages")
+
+    ChatService.clearChats()
+    println(ChatService.getChats().size)
+
+    ChatService.deleteChat(2)
+    println(ChatService.getChats())
 }
 
 class NoChatException : Exception()
@@ -27,26 +39,40 @@ object ChatService {
     }
 
     fun getUnreadChatsCount(): Int {
-        return chats.values.count { chat ->
-            chat.message.any { !it.read }
-        }
+        return chats.values.count { chat -> chat.message.any { !it.read } }
     }
 
     fun getMessages(userId: Int, count: Int): List<Message> {
-        return ChatService.chats[userId]?.message?.takeLast(count)
-            ?: throw NoChatException()
+        val chat = chats[userId] ?: throw NoChatException()
+        return chat.message.takeLast(count)
     }
 
-    fun getLastMessage(): String {
-        return chats.values.mapNotNull { chat ->
-            chat.message.lastOrNull { it.text.isNotBlank() }?.text
-        }.lastOrNull() ?: "Сообщение не существует"
+    fun getChats(): List<Chat> {
+        return chats.values.toList()
+    }
+
+    fun deleteChat(userId: Int) {
+        chats.remove(userId)
+        chats[userId]?.message?.clear()
+    }
+
+    fun deleteMessage(userId: Int, messageIndex: Int) {
+        chats[userId]?.message?.removeAt(messageIndex)
+    }
+
+    fun getLastMessage(): List<String> {
+        return chats.values.flatMap { chat ->
+            chat.message.asSequence()
+                .filter { it.text.isNotBlank() }
+                .map { it.text }
+        }
     }
 
     fun clearChats() {
         chats.clear()
     }
 }
+
 
 data class Message(val text: String, var read: Boolean = false)
 data class Chat(val message: MutableList<Message> = mutableListOf())
