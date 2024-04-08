@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T19:50:38" hostname="K-K-K" time="0.011">
+<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T19:52:59" hostname="K-K-K" time="0.015">
   <properties/>
-  <testcase name="testAddMessage" classname="ChatServiceTest" time="0.003"/>
-  <testcase name="testDeleteMessage" classname="ChatServiceTest" time="0.007"/>
+  <testcase name="testAddMessage" classname="ChatServiceTest" time="0.013"/>
+  <testcase name="testDeleteMessage" classname="ChatServiceTest" time="0.002"/>
   <testcase name="testClearChats" classname="ChatServiceTest" time="0.0"/>
   <testcase name="testGetLastMessage" classname="ChatServiceTest" time="0.0"/>
   <testcase name="testGetMessages" classname="ChatServiceTest" time="0.0"/>

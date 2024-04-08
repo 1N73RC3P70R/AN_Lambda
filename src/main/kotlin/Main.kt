@@ -1,12 +1,12 @@
+import java.util.NoSuchElementException
+
 fun main() {
     val service = ChatService
 
-    service.apply {
-        addMessage(0, Message("Здравствуй!", true))
-        addMessage(1, Message("Добрый день!"))
-    }
+    service.addMessage(0, Message("Здравствуй!", true))
+    service.addMessage(1, Message("Добрый день!"))
 
-    val allMessages = ChatService.getChats()
+    val allMessages = service.getChats()
     println("Все сообщения: $allMessages")
 
     println("Непрочитанные сообщения: ${service.getUnreadChatsCount()}")
@@ -17,19 +17,17 @@ fun main() {
         println("Сообщение отсутствует: ${e.message}")
     }
 
-    var lastMessages = service.getLastMessage()
+    val lastMessages = service.getLastMessage()
     println("Последние сообщения: $lastMessages")
 
-    service.deleteMessage(1, service.getMessage(1, 1).firstOrNull())
-
-    lastMessages = service.getLastMessage()
-    println("Последние сообщения после удаления: $lastMessages")
+    service.deleteMessage(1, service.getMessage(1, 1)[0])
+    println("Последние сообщения после удаления: ${service.getLastMessage()}")
 
     service.clearChats()
-    println(service.getChats().size)
+    println("Количество чатов после очистки: ${service.getChats().size}")
 
     service.deleteChat(2)
-    println(service.getChats())
+    println("Список чатов после удаления: ${service.getChats()}")
 }
 
 class NoChatException : Exception()
@@ -44,14 +42,13 @@ object ChatService {
     }
 
     fun getUnreadChatsCount(): Int {
-        return chats.values.sumOf { chat -> chat.message.count { !it.read } }
+        return chats.asSequence().count { (_, chat) -> chat.message.any { !it.read } }
     }
 
     fun getMessage(userId: Int, count: Int): List<Message> {
         val chat = chats[userId] ?: throw NoChatException()
-        return chat.message.takeLast(count).filterNotNull()
+        return chat.message.takeLast(count)
     }
-
 
     fun getChats(): List<Chat> {
         return chats.values.toList()
@@ -62,7 +59,7 @@ object ChatService {
         chats[userId]?.message?.clear()
     }
 
-    fun deleteMessage(userId: Int, message: Message?) {
+    fun deleteMessage(userId: Int, message: Message) {
         chats[userId]?.message?.remove(message)
     }
 
