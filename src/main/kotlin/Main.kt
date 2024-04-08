@@ -42,6 +42,10 @@ object ChatService {
             chat.message.lastOrNull { it.text.isNotBlank() }?.text
         }.lastOrNull() ?: "Сообщение не существует"
     }
+
+    fun clearChats() {
+        chats.clear()
+    }
 }
 
 data class Message(val text: String, var read: Boolean = false)
