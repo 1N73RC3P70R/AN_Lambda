@@ -52,6 +52,7 @@ object ChatService {
         return chat.message.takeLast(count).filterNotNull()
     }
 
+
     fun getChats(): List<Chat> {
         return chats.values.toList()
     }
