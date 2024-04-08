@@ -68,12 +68,7 @@ object ChatService {
 
     fun getLastMessage(): List<String> {
         return chats.values.flatMap { chat ->
-            val lastMessages = chat.message.lastOrNull()?.text
-            if (lastMessages != null && lastMessages.isNotBlank()) {
-                listOf(lastMessages)
-            } else {
-                emptyList()
-            }
+            chat.message.lastOrNull()?.text?.let { listOf(it) } ?: listOf("НЕТ СООБЩЕНИЙ!")
         }
     }
 
