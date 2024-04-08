@@ -13,11 +13,13 @@ repositories {
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation("junit:junit:4.13.2")
+    implementation("org.jacoco:org.jacoco.core:0.8.7")
+
 }
 
 tasks.test {
-    useJUnitPlatform()
+    useJUnit()
 }
 
 tasks.withType<KotlinCompile> {
