@@ -1,5 +1,3 @@
-import java.util.NoSuchElementException
-
 fun main() {
     val service = ChatService
 
