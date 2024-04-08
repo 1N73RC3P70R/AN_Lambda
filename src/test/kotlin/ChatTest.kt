@@ -15,7 +15,7 @@ class ChatServiceTest {
         val service = ChatService
         service.clearChats()
         try {
-            service.getMessages(1, 1)
+            service.getMessage(1, 1)
             fail("NoChatException не работает")
         } catch (e: NoChatException) {
             "Работает!"
@@ -43,7 +43,7 @@ class ChatServiceTest {
     fun testDeleteMessage() {
         val service = ChatService
         service.addMessage(1, Message("Здравствуй!"))
-        service.deleteMessage(1, 0)
-        assertTrue(service.getMessages(1, 1).isEmpty())
+        service.deleteMessage(1, service.getMessage(1, 1).first())
+        assertTrue(service.getMessage(1, 1).isEmpty())
     }
 }

@@ -1,9 +1,9 @@
 fun main() {
     val service = ChatService
 
-
     service.addMessage(0, Message("Здравствуй!", true))
     service.addMessage(1, Message("Добрый день!"))
+
 
     val allMessages = ChatService.getChats()
     println("Все сообщения: $allMessages")
@@ -11,21 +11,26 @@ fun main() {
     println("Непрочитанные сообщения: ${service.getUnreadChatsCount()}")
 
     try {
-        service.getMessages(1, 2)
+        service.getMessage(1, 2)
     } catch (e: NoChatException) {
         println("Сообщение отсутствует: ${e.message}")
     }
 
-    ChatService.deleteMessage(1, 0)
-    val lastMessages = ChatService.getLastMessage()
+    var lastMessages = service.getLastMessage()
     println("Последние сообщения: $lastMessages")
 
-    ChatService.clearChats()
-    println(ChatService.getChats().size)
+    service.deleteMessage(1, service.getMessage(1, 1)[0])
 
-    ChatService.deleteChat(2)
-    println(ChatService.getChats())
+    lastMessages = service.getLastMessage()
+    println("Последние сообщения после удаления: $lastMessages")
+
+    service.clearChats()
+    println(service.getChats().size)
+
+    service.deleteChat(2)
+    println(service.getChats())
 }
+
 
 class NoChatException : Exception()
 
@@ -42,7 +47,7 @@ object ChatService {
         return chats.values.count { chat -> chat.message.any { !it.read } }
     }
 
-    fun getMessages(userId: Int, count: Int): List<Message> {
+    fun getMessage(userId: Int, count: Int): List<Message> {
         val chat = chats[userId] ?: throw NoChatException()
         return chat.message.takeLast(count)
     }
@@ -56,15 +61,19 @@ object ChatService {
         chats[userId]?.message?.clear()
     }
 
-    fun deleteMessage(userId: Int, messageIndex: Int) {
-        chats[userId]?.message?.removeAt(messageIndex)
+    fun deleteMessage(userId: Int, message: Message) {
+        chats[userId]?.message?.remove(message)
     }
+
 
     fun getLastMessage(): List<String> {
         return chats.values.flatMap { chat ->
-            chat.message.asSequence()
-                .filter { it.text.isNotBlank() }
-                .map { it.text }
+            val lastMessages = chat.message.lastOrNull()?.text
+            if (lastMessages != null && lastMessages.isNotBlank()) {
+                listOf(lastMessages)
+            } else {
+                emptyList()
+            }
         }
     }
 
