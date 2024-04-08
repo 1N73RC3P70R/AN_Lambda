@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T18:12:41" hostname="K-K-K" time="0.01">
+<testsuite name="ChatServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2024-04-08T19:50:38" hostname="K-K-K" time="0.011">
   <properties/>
   <testcase name="testAddMessage" classname="ChatServiceTest" time="0.003"/>
   <testcase name="testDeleteMessage" classname="ChatServiceTest" time="0.007"/>

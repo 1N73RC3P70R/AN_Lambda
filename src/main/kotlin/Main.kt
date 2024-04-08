@@ -1,9 +1,10 @@
 fun main() {
     val service = ChatService
 
-    service.addMessage(0, Message("Здравствуй!", true))
-    service.addMessage(1, Message("Добрый день!"))
-
+    service.apply {
+        addMessage(0, Message("Здравствуй!", true))
+        addMessage(1, Message("Добрый день!"))
+    }
 
     val allMessages = ChatService.getChats()
     println("Все сообщения: $allMessages")
@@ -19,7 +20,7 @@ fun main() {
     var lastMessages = service.getLastMessage()
     println("Последние сообщения: $lastMessages")
 
-    service.deleteMessage(1, service.getMessage(1, 1)[0])
+    service.deleteMessage(1, service.getMessage(1, 1).firstOrNull())
 
     lastMessages = service.getLastMessage()
     println("Последние сообщения после удаления: $lastMessages")
@@ -30,7 +31,6 @@ fun main() {
     service.deleteChat(2)
     println(service.getChats())
 }
-
 
 class NoChatException : Exception()
 
@@ -44,12 +44,12 @@ object ChatService {
     }
 
     fun getUnreadChatsCount(): Int {
-        return chats.values.count { chat -> chat.message.any { !it.read } }
+        return chats.values.sumOf { chat -> chat.message.count { !it.read } }
     }
 
     fun getMessage(userId: Int, count: Int): List<Message> {
         val chat = chats[userId] ?: throw NoChatException()
-        return chat.message.takeLast(count)
+        return chat.message.takeLast(count).filterNotNull()
     }
 
     fun getChats(): List<Chat> {
@@ -61,14 +61,13 @@ object ChatService {
         chats[userId]?.message?.clear()
     }
 
-    fun deleteMessage(userId: Int, message: Message) {
+    fun deleteMessage(userId: Int, message: Message?) {
         chats[userId]?.message?.remove(message)
     }
 
-
     fun getLastMessage(): List<String> {
-        return chats.values.flatMap { chat ->
-            chat.message.lastOrNull()?.text?.let { listOf(it) } ?: listOf("НЕТ СООБЩЕНИЙ!")
+        return chats.values.map { chat ->
+            chat.message.lastOrNull()?.text ?: "НЕТ СООБЩЕНИЙ!"
         }
     }
 
