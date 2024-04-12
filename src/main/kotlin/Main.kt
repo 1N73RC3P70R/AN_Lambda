@@ -40,12 +40,12 @@ object ChatService {
     }
 
     fun getUnreadChatsCount(): Int {
-        return chats.asSequence().count { (_, chat) -> chat.message.any { !it.read } }
+        return chats.count { (_, chat) -> chat.message.any { !it.read } }
     }
 
     fun getMessage(userId: Int, count: Int): List<Message> {
         val chat = chats[userId] ?: throw NoChatException()
-        return chat.message.takeLast(count)
+        return chat.message.take(count).onEach { it.read = true }
     }
 
     fun getChats(): List<Chat> {
@@ -62,9 +62,9 @@ object ChatService {
     }
 
     fun getLastMessage(): List<String> {
-        return chats.values.map { chat ->
-            chat.message.lastOrNull()?.text ?: "НЕТ СООБЩЕНИЙ!"
-        }
+        return chats.values.asSequence().mapNotNull { chat -> chat.message.lastOrNull()?.text }
+            .toList().asReversed().asSequence().takeWhile { it.isNotEmpty() }.toList().takeIf { it.isNotEmpty() }
+            ?: listOf("НЕТ СООБЩЕНИЙ!")
     }
 
     fun clearChats() {
